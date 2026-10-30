@@ -124,11 +124,11 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
                 {/* Laisha (Blinks and head tilts) */}
                 <div
                   onClick={() => {
-                    comicSound.playWoof();
+                    comicSound.playLaishaBark();
                     onGoToCharacters('laisha');
                   }}
                   className="flex flex-col items-center cursor-pointer transition-transform hover:scale-110 active:scale-95"
-                  title="¡Toca a Laisha!"
+                  title="¡Toca a Laisha para escuchar su ladrido!"
                 >
                   <StorybookCharacter characterId="laisha" size="xl" />
                   <span className="font-title font-black text-base text-amber-950 mt-2">
@@ -140,11 +140,11 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
                 {/* Merlina (Wags tail and bounces!) */}
                 <div
                   onClick={() => {
-                    comicSound.playWoof();
+                    comicSound.playMerlinaBark();
                     onGoToCharacters('merlina');
                   }}
                   className="flex flex-col items-center cursor-pointer transition-transform hover:scale-110 active:scale-95"
-                  title="¡Toca a Merlina!"
+                  title="¡Toca a Merlina para escuchar su ladrido!"
                 >
                   <StorybookCharacter characterId="merlina" size="xl" />
                   <span className="font-title font-black text-base text-teal-950 mt-2">
@@ -157,7 +157,10 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
               {/* Parents row */}
               <div className="flex items-center justify-center gap-6 pt-4 border-t-2 border-slate-100 mt-2">
                 <div
-                  onClick={() => onGoToCharacters('ceci')}
+                  onClick={() => {
+                    comicSound.playPop();
+                    onGoToCharacters('ceci');
+                  }}
                   className="flex items-center gap-2 cursor-pointer hover:opacity-85 transition-opacity"
                 >
                   <StorybookCharacter characterId="ceci" size="sm" />
@@ -168,7 +171,10 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
                 </div>
 
                 <div
-                  onClick={() => onGoToCharacters('jorge')}
+                  onClick={() => {
+                    comicSound.playPop();
+                    onGoToCharacters('jorge');
+                  }}
                   className="flex items-center gap-2 cursor-pointer hover:opacity-85 transition-opacity"
                 >
                   <StorybookCharacter characterId="jorge" size="sm" />
@@ -210,7 +216,9 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
               <div
                 key={cId}
                 onClick={() => {
-                  comicSound.playPop();
+                  if (cId === 'laisha') comicSound.playLaishaBark();
+                  else if (cId === 'merlina') comicSound.playMerlinaBark();
+                  else comicSound.playPop();
                   onGoToCharacters(cId);
                 }}
                 className="bg-white rounded-3xl storybook-border p-4 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"

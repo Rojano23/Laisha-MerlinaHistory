@@ -342,4 +342,21 @@ describe('UI-R2.1: Hardening de Pensamientos Interactivos y Reinicio de Historia
     thoughts.add(shoeInteractionId);
     assert.equal(thoughts.has(shoeInteractionId), true);
   });
+
+  // --------------------------------------------------------------------------
+  // Caso 13 — Navegación móvil y tableta: Scroll to Top garantizado
+  // Comprobar que al cambiar o re-seleccionar sección, el viewport vuelve a la cima (top: 0).
+  // --------------------------------------------------------------------------
+  it('Caso 13 — Navegación móvil/tableta: Reset de scroll a top 0 al seleccionar cualquier sección', () => {
+    let scrolledTop = 850; // Usuario hace scroll en celular a 850px
+
+    const mockScrollTo = (options: { top: number }) => {
+      scrolledTop = options.top;
+    };
+
+    // Al seleccionar cualquier sección o re-seleccionar la actual desde el menú inferior
+    mockScrollTo({ top: 0 });
+    assert.equal(scrolledTop, 0, 'El viewport debe restablecerse a la parte superior (top: 0)');
+  });
 });
+

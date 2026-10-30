@@ -70,7 +70,7 @@ export const EPISODES_DATA: ComicEpisode[] = [
             characterId: 'jorge',
             promptLabel: '¿Qué pensaba Jorge?',
             revealedThought: '«¡Tener un perro es facilísimo! Solo le dices "siéntate" y listo... ¿verdad?».',
-            soundCue: 'woof',
+            soundCue: 'pop',
           },
         ],
         funStickers: [
@@ -169,7 +169,7 @@ export const EPISODES_DATA: ComicEpisode[] = [
             characterId: 'vecino',
             promptLabel: '¿Qué pasó en el auto?',
             revealedThought: '«¡Apenas abrí la puerta, la perrita saltó a mi regazo como un resorte de felicidad!».',
-            soundCue: 'woof',
+            soundCue: 'pop',
           },
         ],
         funStickers: [
@@ -220,7 +220,7 @@ export const EPISODES_DATA: ComicEpisode[] = [
             characterId: 'laisha',
             promptLabel: 'Toca la colita feliz de Laisha',
             revealedThought: '«¡Libertad! ¡Pisos lisos para patinar y una familia nueva que me da mimos!».',
-            soundCue: 'woof',
+            soundCue: 'laisha_bark',
           },
         ],
         funStickers: [

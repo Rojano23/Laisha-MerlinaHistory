@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { HomeCover } from './components/home/HomeCover';
 import { ComicReader } from './components/comic/ComicReader';
 import { EpisodeCatalog } from './components/episodes/EpisodeCatalog';
@@ -12,6 +12,8 @@ import { EPISODES_DATA } from './data/episodes';
 import { ComicEpisode, CharacterId } from './types/comic';
 import { comicSound } from './utils/audio';
 import { shouldStartFresh } from './utils/readingState';
+import { scrollToPageTop } from './utils/scroll';
+import { AudioSettingsModal } from './components/audio/AudioSettingsModal';
 import {
   BookOpen,
   Users,
@@ -19,6 +21,7 @@ import {
   Sparkles,
   Volume2,
   VolumeX,
+  Sliders,
 } from 'lucide-react';
 
 export default function App() {
@@ -27,21 +30,49 @@ export default function App() {
   const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId>('laisha');
   const [soundActive, setSoundActive] = useState<boolean>(comicSound.isEnabled());
   const [readerStartFresh, setReaderStartFresh] = useState<boolean>(false);
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState<boolean>(false);
 
-  const handleStartReading = (episode?: ComicEpisode, options?: { restart?: boolean }) => {
-    const targetEpisode = episode || EPISODES_DATA[0];
-    setActiveEpisode(targetEpisode);
-    const startFresh = options?.restart !== undefined ? options.restart : shouldStartFresh(targetEpisode.id);
-    setReaderStartFresh(startFresh);
-    setCurrentView('reader');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Sync soundActive reactively with audio manager
+  useEffect(() => {
+    return comicSound.subscribe((s) => {
+      setSoundActive(s.soundEnabled);
+    });
+  }, []);
 
-  const handleGoToCharacters = (charId?: string) => {
+  // Guarantee that whenever currentView changes, the viewport scrolls immediately to top
+  useEffect(() => {
+    scrollToPageTop(false);
+  }, [currentView]);
+
+  const handleNavigate = useCallback(
+    (view: 'home' | 'reader' | 'episodes' | 'characters', extraAction?: () => void) => {
+      comicSound.playPop();
+      extraAction?.();
+      setCurrentView(view);
+      scrollToPageTop(false);
+    },
+    []
+  );
+
+  const handleStartReading = useCallback(
+    (episode?: ComicEpisode, options?: { restart?: boolean }) => {
+      comicSound.playWoof();
+      const targetEpisode = episode || EPISODES_DATA[0];
+      setActiveEpisode(targetEpisode);
+      const startFresh = options?.restart !== undefined ? options.restart : shouldStartFresh(targetEpisode.id);
+      setReaderStartFresh(startFresh);
+      setCurrentView('reader');
+      scrollToPageTop(false);
+    },
+    []
+  );
+
+  const handleGoToCharacters = useCallback((charId?: string) => {
+    comicSound.playPop();
     if (charId) setSelectedCharacterId(charId as CharacterId);
     setCurrentView('characters');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    scrollToPageTop(false);
+  }, []);
 
   const handleSoundToggle = () => {
     const newState = comicSound.toggleSound();
@@ -55,11 +86,9 @@ export default function App() {
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
           {/* Zone 1: Wordmark */}
           <button
-            onClick={() => {
-              comicSound.playPop();
-              setCurrentView('home');
-            }}
+            onClick={() => handleNavigate('home')}
             className="text-left cursor-pointer group flex items-center gap-2 whitespace-nowrap shrink-0"
+            title="Ir al inicio"
           >
             <span className="font-title font-black text-2xl md:text-3xl tracking-tight text-[#382B24] group-hover:text-amber-800 transition-colors">
               Laisha &amp; Merlina
@@ -69,13 +98,10 @@ export default function App() {
             </span>
           </button>
 
-          {/* Zone 2: Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 text-base font-black text-[#382B24]">
+          {/* Zone 2: Navigation Links (Shown on desktop >= 1024px; mobile & tablets use bottom bar) */}
+          <nav className="hidden lg:flex items-center gap-6 text-base font-black text-[#382B24]">
             <button
-              onClick={() => {
-                comicSound.playPop();
-                setCurrentView('home');
-              }}
+              onClick={() => handleNavigate('home')}
               className={`hover:text-amber-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 currentView === 'home' ? 'text-amber-800 border-b-3 border-amber-800 pb-0.5' : ''
               }`}
@@ -84,10 +110,7 @@ export default function App() {
             </button>
 
             <button
-              onClick={() => {
-                comicSound.playWoof();
-                handleStartReading(undefined, { restart: false });
-              }}
+              onClick={() => handleStartReading(undefined, { restart: false })}
               className={`hover:text-amber-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 currentView === 'reader' ? 'text-amber-800 border-b-3 border-amber-800 pb-0.5' : ''
               }`}
@@ -96,10 +119,7 @@ export default function App() {
             </button>
 
             <button
-              onClick={() => {
-                comicSound.playPop();
-                setCurrentView('episodes');
-              }}
+              onClick={() => handleNavigate('episodes')}
               className={`hover:text-amber-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 currentView === 'episodes' ? 'text-amber-800 border-b-3 border-amber-800 pb-0.5' : ''
               }`}
@@ -108,10 +128,7 @@ export default function App() {
             </button>
 
             <button
-              onClick={() => {
-                comicSound.playPop();
-                setCurrentView('characters');
-              }}
+              onClick={() => handleNavigate('characters')}
               className={`hover:text-amber-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 currentView === 'characters' ? 'text-amber-800 border-b-3 border-amber-800 pb-0.5' : ''
               }`}
@@ -122,20 +139,28 @@ export default function App() {
 
           {/* Zone 3: Sound & Action */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Audio Toggle */}
-            <button
-              onClick={handleSoundToggle}
-              title={soundActive ? 'Sonidos activados' : 'Sonidos apagados'}
-              className="p-2.5 rounded-2xl bg-amber-200 hover:bg-amber-300 storybook-button text-amber-950 transition-colors cursor-pointer"
-            >
-              {soundActive ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-            </button>
+            {/* Audio Controls: Quick Toggle + Settings Modal */}
+            <div className="flex items-center bg-amber-200 rounded-2xl storybook-border-sm p-0.5">
+              <button
+                onClick={handleSoundToggle}
+                title={soundActive ? 'Silenciar sonidos' : 'Activar sonidos'}
+                aria-label={soundActive ? 'Silenciar sonidos' : 'Activar sonidos'}
+                className="p-2 rounded-xl hover:bg-amber-300 text-amber-950 transition-colors cursor-pointer"
+              >
+                {soundActive ? <Volume2 className="w-5 h-5 text-emerald-900" /> : <VolumeX className="w-5 h-5 text-slate-600" />}
+              </button>
+              <button
+                onClick={() => setIsAudioModalOpen(true)}
+                title="Ajustes de sonido"
+                aria-label="Abrir ajustes de sonido"
+                className="p-2 rounded-xl hover:bg-amber-300 text-amber-950 transition-colors cursor-pointer border-l border-amber-300/80"
+              >
+                <Sliders className="w-4 h-4 text-amber-900" />
+              </button>
+            </div>
 
             <button
-              onClick={() => {
-                comicSound.playWoof();
-                handleStartReading(undefined, { restart: false });
-              }}
+              onClick={() => handleStartReading(undefined, { restart: false })}
               className="px-5 py-2.5 text-sm md:text-base font-title font-black text-[#FFFBEB] bg-[#382B24] rounded-2xl hover:bg-amber-900 storybook-button transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-sm"
             >
               ¡Vamos a leer!
@@ -144,15 +169,12 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main View Container */}
-      <div className="flex-1">
+      {/* Main View Container with bottom padding on mobile/tablet to clear fixed nav */}
+      <div id="main-content-view" className="flex-1 pb-20 lg:pb-6">
         {currentView === 'home' && (
           <HomeCover
             onStartReading={(opts) => handleStartReading(undefined, opts)}
-            onGoToEpisodes={() => {
-              setCurrentView('episodes');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onGoToEpisodes={() => handleNavigate('episodes')}
             onGoToCharacters={handleGoToCharacters}
           />
         )}
@@ -162,10 +184,7 @@ export default function App() {
             key={`${activeEpisode.id}-${readerStartFresh ? 'fresh' : 'continue'}`}
             episode={activeEpisode}
             startFresh={readerStartFresh}
-            onBackToCatalog={() => {
-              setCurrentView('episodes');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onBackToCatalog={() => handleNavigate('episodes')}
             onSelectCharacter={handleGoToCharacters}
           />
         )}
@@ -185,63 +204,54 @@ export default function App() {
         )}
       </div>
 
-      {/* Mobile Bottom Navigation Bar (Large touch targets for kids >=48px) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF5EB]/95 backdrop-blur-md border-t-3 border-[#382B24] grid grid-cols-4 items-center h-16 pb-safe shadow-lg">
+      {/* Mobile & Tablet Bottom Navigation Bar (Large touch targets >= 48px) */}
+      <nav
+        aria-label="Navegación principal inferior"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF5EB]/95 backdrop-blur-md border-t-3 border-[#382B24] grid grid-cols-4 items-center h-16 sm:h-18 pb-safe shadow-2xl"
+      >
         <button
-          onClick={() => {
-            comicSound.playPop();
-            setCurrentView('home');
-          }}
-          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer ${
-            currentView === 'home' ? 'text-amber-900 font-black' : 'text-slate-600'
+          onClick={() => handleNavigate('home')}
+          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer transition-colors ${
+            currentView === 'home' ? 'text-amber-900 font-black' : 'text-slate-600 hover:text-amber-900'
           }`}
         >
           <Compass className="w-6 h-6" />
-          <span className="text-[11px] font-bold mt-0.5">Inicio</span>
+          <span className="text-[11px] sm:text-xs font-bold mt-0.5">Inicio</span>
         </button>
 
         <button
-          onClick={() => {
-            comicSound.playWoof();
-            handleStartReading(undefined, { restart: false });
-          }}
-          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer ${
-            currentView === 'reader' ? 'text-amber-900 font-black' : 'text-slate-600'
+          onClick={() => handleStartReading(undefined, { restart: false })}
+          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer transition-colors ${
+            currentView === 'reader' ? 'text-amber-900 font-black' : 'text-slate-600 hover:text-amber-900'
           }`}
         >
           <BookOpen className="w-6 h-6" />
-          <span className="text-[11px] font-bold mt-0.5">¡A leer!</span>
+          <span className="text-[11px] sm:text-xs font-bold mt-0.5">¡A leer!</span>
         </button>
 
         <button
-          onClick={() => {
-            comicSound.playPop();
-            setCurrentView('episodes');
-          }}
-          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer ${
-            currentView === 'episodes' ? 'text-amber-900 font-black' : 'text-slate-600'
+          onClick={() => handleNavigate('episodes')}
+          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer transition-colors ${
+            currentView === 'episodes' ? 'text-amber-900 font-black' : 'text-slate-600 hover:text-amber-900'
           }`}
         >
           <Sparkles className="w-6 h-6" />
-          <span className="text-[11px] font-bold mt-0.5">Historias</span>
+          <span className="text-[11px] sm:text-xs font-bold mt-0.5">Historias</span>
         </button>
 
         <button
-          onClick={() => {
-            comicSound.playPop();
-            setCurrentView('characters');
-          }}
-          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer ${
-            currentView === 'characters' ? 'text-amber-900 font-black' : 'text-slate-600'
+          onClick={() => handleNavigate('characters')}
+          className={`flex flex-col items-center justify-center min-h-[48px] min-w-[48px] py-1 cursor-pointer transition-colors ${
+            currentView === 'characters' ? 'text-amber-900 font-black' : 'text-slate-600 hover:text-amber-900'
           }`}
         >
           <Users className="w-6 h-6" />
-          <span className="text-[11px] font-bold mt-0.5">Familia</span>
+          <span className="text-[11px] sm:text-xs font-bold mt-0.5">Familia</span>
         </button>
       </nav>
 
       {/* Friendly Storybook Footer */}
-      <footer className="mt-auto border-t-3 border-[#382B24]/15 py-6 px-4 text-center text-xs md:text-sm text-[#4A382D]">
+      <footer className="mt-auto border-t-3 border-[#382B24]/15 py-6 px-4 pb-24 lg:pb-6 text-center text-xs md:text-sm text-[#4A382D]">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-comic font-bold">
             <strong>Laisha &amp; Merlina — Una vida de pelos</strong> 🐾 Una aventura familiar interactiva.
@@ -255,6 +265,12 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Kid-friendly Audio Settings Modal */}
+      <AudioSettingsModal
+        isOpen={isAudioModalOpen}
+        onClose={() => setIsAudioModalOpen(false)}
+      />
     </div>
   );
 }

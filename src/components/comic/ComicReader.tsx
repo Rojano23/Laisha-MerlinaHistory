@@ -12,6 +12,7 @@ import {
   saveEpisodeProgress,
   resetEpisodeProgress,
 } from '../../utils/readingState';
+import { scrollToPageTop } from '../../utils/scroll';
 import {
   ChevronLeft,
   ChevronRight,
@@ -23,7 +24,10 @@ import {
   Sparkles,
   Trophy,
   ArrowLeft,
+  Sliders,
 } from 'lucide-react';
+import { AmbienceType, resolveSettingAmbience } from '../../utils/audio';
+import { AudioSettingsModal } from '../audio/AudioSettingsModal';
 
 interface ComicReaderProps {
   episode: ComicEpisode;
@@ -42,6 +46,39 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
   const [soundEnabled, setSoundEnabled] = useState(comicSound.isEnabled());
   const [discoveredThoughts, setDiscoveredThoughts] = useState<Set<string>>(new Set());
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
+
+  // Sync sound settings reactively
+  useEffect(() => {
+    return comicSound.subscribe((s) => {
+      setSoundEnabled(s.soundEnabled);
+    });
+  }, []);
+
+  // Manage contextual background ambience:
+  // - Silence for interior scenes (silence is intentional)
+  // - Subtle outdoor ambience ('park') only when explicitly outdoor
+  // - Automatic ambience DISABLED in continuous-reading mode ('scroll')
+  // - Immediate stop when leaving outdoor scene or completed episode
+  useEffect(() => {
+    if (isCompleted || readingMode === 'scroll') {
+      comicSound.stopAmbience();
+      return;
+    }
+
+    const currentPanel = episode.panels[currentPanelIndex] || episode.panels[0];
+    const targetAmbience = resolveSettingAmbience(currentPanel?.setting);
+
+    if (targetAmbience === 'park') {
+      comicSound.playAmbience('park');
+    } else {
+      comicSound.stopAmbience();
+    }
+
+    return () => {
+      comicSound.stopAmbience();
+    };
+  }, [episode.panels, currentPanelIndex, readingMode, isCompleted]);
 
   // Canonical restart handler (Idempotent and safe)
   const handleRestart = useCallback(() => {
@@ -50,7 +87,7 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
     setDiscoveredThoughts(fresh.discoveredThoughts);
     setIsCompleted(fresh.completed);
     comicSound.playPop();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToPageTop(false);
   }, [episode.id]);
 
   // Load progress or apply fresh start on mount or episode change
@@ -132,7 +169,7 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
         discoveredThoughts,
         completed: false,
       });
-      window.scrollTo({ top: 120, behavior: 'smooth' });
+      scrollToPageTop(false);
     } else {
       setIsCompleted(true);
       comicSound.playFanfare();
@@ -141,6 +178,7 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
         discoveredThoughts,
         completed: true,
       });
+      scrollToPageTop(false);
     }
   };
 
@@ -154,7 +192,7 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
         discoveredThoughts,
         completed: false,
       });
-      window.scrollTo({ top: 120, behavior: 'smooth' });
+      scrollToPageTop(false);
     }
   };
 
@@ -206,16 +244,25 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
               </span>
             </button>
 
-            {/* Sound Toggle */}
-            <button
-              onClick={handleToggleSound}
-              title={soundEnabled ? 'Sonidos activados' : 'Sonidos apagados'}
-              className={`p-2 rounded-2xl storybook-button cursor-pointer ${
-                soundEnabled ? 'bg-amber-300 text-amber-950' : 'bg-slate-200 text-slate-500'
-              }`}
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </button>
+            {/* Sound Controls: Quick Toggle & Settings Modal */}
+            <div className="flex items-center bg-amber-200/90 rounded-2xl storybook-border-sm p-0.5">
+              <button
+                onClick={handleToggleSound}
+                title={soundEnabled ? 'Silenciar sonidos' : 'Activar sonidos'}
+                aria-label={soundEnabled ? 'Silenciar sonidos' : 'Activar sonidos'}
+                className="p-1.5 rounded-xl hover:bg-amber-300 text-amber-950 transition-colors cursor-pointer"
+              >
+                {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-900" /> : <VolumeX className="w-4 h-4 text-slate-600" />}
+              </button>
+              <button
+                onClick={() => setIsAudioModalOpen(true)}
+                title="Ajustes de sonido y ambiente"
+                aria-label="Abrir ajustes de sonido"
+                className="p-1.5 rounded-xl hover:bg-amber-300 text-amber-950 transition-colors cursor-pointer border-l border-amber-300"
+              >
+                <Sliders className="w-3.5 h-3.5 text-amber-900" />
+              </button>
+            </div>
 
             {/* Restart Button */}
             <button
@@ -373,6 +420,12 @@ export const ComicReader: React.FC<ComicReaderProps> = ({
           </section>
         )}
       </main>
+
+      {/* Kid-friendly Audio Settings Modal */}
+      <AudioSettingsModal
+        isOpen={isAudioModalOpen}
+        onClose={() => setIsAudioModalOpen(false)}
+      />
     </div>
   );
 };

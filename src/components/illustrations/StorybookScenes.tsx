@@ -5,7 +5,6 @@
 
 import React from 'react';
 import { CharacterId } from '../../types/comic';
-import { comicSound } from '../../utils/audio';
 
 interface StorybookSceneProps {
   sceneId: string;
@@ -18,11 +17,6 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
   onCharacterClick,
 }) => {
   const handleCharClick = (charId: CharacterId) => {
-    if (charId === 'laisha' || charId === 'merlina') {
-      comicSound.playWoof();
-    } else {
-      comicSound.playPop();
-    }
     if (onCharacterClick) {
       onCharacterClick(charId);
     }
@@ -422,7 +416,6 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <g
             className="cursor-pointer transition-transform hover:scale-110"
             onClick={() => {
-              comicSound.playChew();
               handleCharClick('laisha');
             }}
           >
@@ -435,7 +428,6 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <g
             className="cursor-pointer transition-transform hover:scale-110"
             onClick={() => {
-              comicSound.playChew();
               handleCharClick('laisha');
             }}
           >

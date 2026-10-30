@@ -34,8 +34,10 @@ export const CharacterRoster: React.FC<CharacterRosterProps> = ({
   const handleSelectCharacter = (id: CharacterId) => {
     setSelectedCharId(id);
     setThoughtRevealed(false);
-    if (id === 'laisha' || id === 'merlina') {
-      comicSound.playWoof();
+    if (id === 'laisha') {
+      comicSound.playLaishaBark();
+    } else if (id === 'merlina') {
+      comicSound.playMerlinaBark();
     } else {
       comicSound.playPop();
     }
@@ -91,13 +93,20 @@ export const CharacterRoster: React.FC<CharacterRosterProps> = ({
             <StorybookCharacter characterId={character.id} size="xl" />
             <button
               onClick={() => {
-                if (character.id === 'laisha' || character.id === 'merlina') comicSound.playWoof();
+                if (character.id === 'laisha') comicSound.playLaishaBark();
+                else if (character.id === 'merlina') comicSound.playMerlinaBark();
                 else comicSound.playPop();
               }}
               className="mt-3 flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-amber-300 hover:bg-amber-400 text-amber-950 font-black text-xs storybook-border-sm cursor-pointer active:scale-95 transition-transform"
             >
               <Volume2 className="w-4 h-4" />
-              <span>¡Tócame para hablar!</span>
+              <span>
+                {character.id === 'laisha'
+                  ? '¡Escuchar a Laisha! 🐾'
+                  : character.id === 'merlina'
+                  ? '¡Escuchar a Merlina! 🌪️'
+                  : '¡Tócame para hablar!'}
+              </span>
             </button>
           </div>
 

@@ -49,7 +49,7 @@ export interface ComicInteraction {
   characterId: CharacterId;
   promptLabel: string;
   revealedThought: string;
-  soundCue?: 'woof' | 'pop' | 'laugh' | 'gasp' | 'chew';
+  soundCue?: 'woof' | 'pop' | 'laugh' | 'gasp' | 'chew' | 'laisha_bark' | 'merlina_bark';
 }
 
 export interface ComicPanel {

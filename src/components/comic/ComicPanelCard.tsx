@@ -53,10 +53,10 @@ export const ComicPanelCard: React.FC<ComicPanelCardProps> = ({
     const interaction = panel.interactions.find((i) => i.characterId === charId);
     if (interaction && onThoughtDiscovered) {
       onThoughtDiscovered(interaction.id);
-      if (interaction.soundCue === 'chew') comicSound.playChew();
-      else if (interaction.soundCue === 'woof') comicSound.playWoof();
-      else comicSound.playPop();
     }
+
+    // Single audio authority: plays character sound with strict human safety
+    comicSound.playCharacterSound(charId, interaction?.soundCue);
   };
 
   const handleCloseCharacterDrawer = (e?: React.MouseEvent) => {
