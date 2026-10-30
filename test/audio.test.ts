@@ -367,8 +367,8 @@ describe('SURGICAL-FIX: Character sounds, human safety, and outdoor-only ambienc
     }
   });
 
-  // 4. Human cannot bark (Jorge, Ceci, Vecino)
-  it('SF-04: Human cannot bark (Jorge, Ceci, Vecino produce pop, never dog bark)', () => {
+  // 4. Human cannot bark (Rox, More, Jorge, Ceci, Vecino)
+  it('SF-04: Human cannot bark (Rox, More, Jorge, Ceci, Vecino produce pop, never dog bark)', () => {
     let dogBarkTriggered = false;
     let popCount = 0;
 
@@ -381,12 +381,12 @@ describe('SURGICAL-FIX: Character sounds, human safety, and outdoor-only ambienc
     comicSound.playPop = async () => { popCount++; };
 
     try {
-      const humans = ['jorge', 'ceci', 'vecino', 'narrador'];
+      const humans = ['rox', 'more', 'jorge', 'ceci', 'fox', 'vecino', 'narrador'];
       for (const human of humans) {
         comicSound.playCharacterSound(human);
       }
       assert.equal(dogBarkTriggered, false, 'Humans must NEVER bark under any circumstance');
-      assert.equal(popCount, 4, 'Humans must trigger pop cue instead');
+      assert.equal(popCount, 7, 'Humans must trigger pop cue instead');
     } finally {
       comicSound.playLaishaBark = originalLaisha;
       comicSound.playMerlinaBark = originalMerlina;
@@ -408,12 +408,14 @@ describe('SURGICAL-FIX: Character sounds, human safety, and outdoor-only ambienc
     comicSound.playPop = async () => { popCount++; };
 
     try {
+      comicSound.playCharacterSound('rox', 'woof');
+      comicSound.playCharacterSound('more', 'woof');
       comicSound.playCharacterSound('jorge', 'woof');
       comicSound.playCharacterSound('vecino', 'woof');
       comicSound.playCharacterSound('ceci', 'woof');
 
       assert.equal(dogBarkTriggered, false, 'Malformed human woof must NEVER trigger dog bark');
-      assert.equal(popCount, 3, 'Malformed human woof safely falls back to pop');
+      assert.equal(popCount, 5, 'Malformed human woof safely falls back to pop');
     } finally {
       comicSound.playLaishaBark = originalLaisha;
       comicSound.playMerlinaBark = originalMerlina;

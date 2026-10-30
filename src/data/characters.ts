@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CharacterProfile } from '../types/comic';
+import { CharacterProfile, CharacterId } from '../types/comic';
 
 export const CHARACTERS_DATA: Record<string, CharacterProfile> = {
   laisha: {
@@ -26,10 +26,10 @@ export const CHARACTERS_DATA: Record<string, CharacterProfile> = {
       lookDescription: 'Pelaje suave moteado en gris azulado con manchas negras, patitas color canela y orejas picudas siempre atentas.',
     },
     funFacts: {
-      favoriteActivity: 'Observar todo desde su tapete como una reina zen y cuidar a Ceci.',
-      favoriteSnack: 'Cualquier pedacito de manzana o premio de premio que caiga de la mesa.',
-      funnyHabit: 'Suspira hondo cuando Jorge dice que van a salir a correr diez kilómetros.',
-      favoriteThought: '«Te estoy mirando, Jorge... y los dos sabemos que esa galleta no era para ti».',
+      favoriteActivity: 'Observar todo desde su tapete como una reina zen y cuidar a More.',
+      favoriteSnack: 'Cualquier pedacito de manzana o premio que caiga de la mesa.',
+      funnyHabit: 'Suspira hondo cuando Rox dice que van a salir a correr diez kilómetros.',
+      favoriteThought: '«Te estoy mirando, Rox... y los dos sabemos que esa galleta no era para ti».',
     },
   },
 
@@ -53,16 +53,16 @@ export const CHARACTERS_DATA: Record<string, CharacterProfile> = {
       lookDescription: 'Manto azul moteado, máscara negra como de antifaz de superhéroe y lengua rosada casi siempre de fuera.',
     },
     funFacts: {
-      favoriteActivity: 'Dormir sobre el lomo del sillón como si fuera un gato gigante mientras Jorge ve la tele.',
+      favoriteActivity: 'Dormir sobre el lomo del sillón como si fuera un gato gigante mientras Rox ve la tele.',
       favoriteSnack: 'Cualquier juguete que chille o pelota de tenis que rebote alto.',
       funnyHabit: 'Ladrarle a las moscas como si fueran dragones voladores.',
       favoriteThought: '«¡Papá se sentó! ¡Alerta roja, desplieguen el protocolo de abrazos con baba!».',
     },
   },
 
-  ceci: {
-    id: 'ceci',
-    name: 'Ceci',
+  more: {
+    id: 'more',
+    name: 'More',
     nickname: 'La protectora',
     species: 'humano',
     role: 'Mamá humana de la casa',
@@ -81,18 +81,18 @@ export const CHARACTERS_DATA: Record<string, CharacterProfile> = {
     funFacts: {
       favoriteActivity: 'Acariciar las orejitas de Laisha mientras toma té en la sala.',
       favoriteSnack: 'Fruta fresca y café con leche.',
-      funnyHabit: 'Esperar a Jorge en la puerta con los brazos cruzados preguntando qué pasó en el parque.',
-      favoriteThought: '«¿Cuándo será el día en que Jorge entre por esa puerta sin una historia insólita?».',
+      funnyHabit: 'Esperar a Rox en la puerta con los brazos cruzados preguntando qué pasó en el parque.',
+      favoriteThought: '«¿Cuándo será el día en que Rox entre por esa puerta sin una historia insólita?».',
     },
   },
 
-  jorge: {
-    id: 'jorge',
-    name: 'Jorge',
+  rox: {
+    id: 'rox',
+    name: 'Rox',
     nickname: 'El papá optimista',
     species: 'humano',
     role: 'Papá humano y paseador oficial',
-    tagline: '«Tranquila Ceci, tengo a las perritas 100% bajo control» (casi nunca es cierto).',
+    tagline: '«Tranquila More, tengo a las perritas 100% bajo control» (casi nunca es cierto).',
     themeColor: {
       bg: 'bg-emerald-100',
       border: 'border-emerald-800',
@@ -112,3 +112,35 @@ export const CHARACTERS_DATA: Record<string, CharacterProfile> = {
     },
   },
 };
+
+// Define legacy and uppercase aliases as non-enumerable properties so Object.keys(CHARACTERS_DATA)
+// only returns the 4 true protagonists: ['laisha', 'merlina', 'more', 'rox']
+const aliases: Record<string, keyof typeof CHARACTERS_DATA> = {
+  More: 'more',
+  ceci: 'more',
+  Ceci: 'more',
+  Rox: 'rox',
+  fox: 'rox',
+  Fox: 'rox',
+  jorge: 'rox',
+  Jorge: 'rox',
+};
+
+Object.entries(aliases).forEach(([alias, targetKey]) => {
+  Object.defineProperty(CHARACTERS_DATA, alias, {
+    enumerable: false,
+    configurable: true,
+    get: () => CHARACTERS_DATA[targetKey],
+  });
+});
+
+export const PRIMARY_CHARACTER_IDS = ['laisha', 'merlina', 'more', 'rox'] as const;
+
+export function getCharacterProfile(charId?: string): CharacterProfile {
+  if (!charId) return CHARACTERS_DATA.laisha;
+  const key = charId.toLowerCase().trim();
+  if (key in CHARACTERS_DATA) {
+    return CHARACTERS_DATA[key];
+  }
+  return CHARACTERS_DATA.laisha;
+}

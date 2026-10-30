@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { CHARACTERS_DATA } from '../../data/characters';
+import { CHARACTERS_DATA, PRIMARY_CHARACTER_IDS } from '../../data/characters';
 import { CharacterId, CharacterProfile } from '../../types/comic';
 import { StorybookCharacter } from '../illustrations/StorybookAvatars';
 import { comicSound } from '../../utils/audio';
@@ -64,7 +64,7 @@ export const CharacterRoster: React.FC<CharacterRosterProps> = ({
 
         {/* Character Selector Pills for Kids */}
         <div className="flex flex-wrap items-center justify-center gap-2.5 mt-6">
-          {(Object.keys(CHARACTERS_DATA) as CharacterId[]).map((id) => {
+          {PRIMARY_CHARACTER_IDS.map((id) => {
             const char = CHARACTERS_DATA[id];
             const isActive = selectedCharId === id;
             return (
@@ -105,7 +105,7 @@ export const CharacterRoster: React.FC<CharacterRosterProps> = ({
                   ? '¡Escuchar a Laisha! 🐾'
                   : character.id === 'merlina'
                   ? '¡Escuchar a Merlina! 🌪️'
-                  : '¡Tócame para hablar!'}
+                  : `¡Saludar a ${character.name}! 👋`}
               </span>
             </button>
           </div>

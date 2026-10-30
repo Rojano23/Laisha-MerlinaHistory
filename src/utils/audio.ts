@@ -347,6 +347,9 @@ class ComicSoundManager {
 
     // Human Safety Rule: Humans must NEVER bark, even if story metadata has malformed soundCue
     const isHuman =
+      lowerId === 'more' ||
+      lowerId === 'rox' ||
+      lowerId === 'fox' ||
       lowerId === 'jorge' ||
       lowerId === 'ceci' ||
       lowerId === 'vecino' ||

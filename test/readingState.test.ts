@@ -292,20 +292,24 @@ describe('UI-R2.1: Hardening de Pensamientos Interactivos y Reinicio de Historia
 
   // --------------------------------------------------------------------------
   // Caso 11 — Otros personajes
-  // Verificar pensamientos e interacciones de Merlina, Ceci y Jorge.
+  // Verificar pensamientos e interacciones de More, Rox y Vecino.
   // --------------------------------------------------------------------------
-  it('Caso 11 — Otros personajes: Funciona para Ceci, Jorge y Vecino de forma idéntica', () => {
+  it('Caso 11 — Otros personajes: Funciona para More, Rox y Vecino de forma idéntica', () => {
     const thoughts = new Set<string>();
 
-    // Pensamiento de Ceci en escena 1
-    const ceciInteraction = pilotEpisode.panels[0].interactions.find((i) => i.characterId === 'ceci');
-    assert.ok(ceciInteraction);
-    thoughts.add(ceciInteraction.id);
+    // Pensamiento de More en escena 1
+    const moreInteraction = pilotEpisode.panels[0].interactions.find(
+      (i) => i.characterId === 'more' || i.characterId === 'ceci'
+    );
+    assert.ok(moreInteraction);
+    thoughts.add(moreInteraction.id);
 
-    // Pensamiento de Jorge en escena 1
-    const jorgeInteraction = pilotEpisode.panels[0].interactions.find((i) => i.characterId === 'jorge');
-    assert.ok(jorgeInteraction);
-    thoughts.add(jorgeInteraction.id);
+    // Pensamiento de Rox en escena 1
+    const roxInteraction = pilotEpisode.panels[0].interactions.find(
+      (i) => i.characterId === 'rox' || i.characterId === 'jorge'
+    );
+    assert.ok(roxInteraction);
+    thoughts.add(roxInteraction.id);
 
     // Pensamiento del vecino en escena 3
     const vecinoInteraction = pilotEpisode.panels[2].interactions.find((i) => i.characterId === 'vecino');
@@ -313,8 +317,8 @@ describe('UI-R2.1: Hardening de Pensamientos Interactivos y Reinicio de Historia
     thoughts.add(vecinoInteraction.id);
 
     assert.equal(thoughts.size, 3);
-    assert.equal(thoughts.has(ceciInteraction.id), true);
-    assert.equal(thoughts.has(jorgeInteraction.id), true);
+    assert.equal(thoughts.has(moreInteraction.id), true);
+    assert.equal(thoughts.has(roxInteraction.id), true);
     assert.equal(thoughts.has(vecinoInteraction.id), true);
 
     // Reiniciar y verificar que todos se limpien por igual

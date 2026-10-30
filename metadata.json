@@ -1,6 +1,6 @@
 {
   "name": "Laisha & Merlina — Una vida de pelos",
-  "description": "Historieta digital interactiva basada en historias reales de cuatro protagonistas: Laisha, Merlina, Ceci y Jorge.",
+  "description": "Historieta digital interactiva basada en historias reales de cuatro protagonistas: Laisha, Merlina, More y Rox.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

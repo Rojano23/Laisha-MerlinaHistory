@@ -88,9 +88,9 @@ export const EpisodeCatalog: React.FC<EpisodeCatalogProps> = ({
 
               {/* Characters Lineup in Cover */}
               <div className="flex items-center justify-center gap-2 my-2">
-                <StorybookCharacter characterId="jorge" size="md" />
+                <StorybookCharacter characterId="rox" size="md" />
                 <StorybookCharacter characterId="laisha" size="lg" />
-                <StorybookCharacter characterId="ceci" size="md" />
+                <StorybookCharacter characterId="more" size="md" />
               </div>
 
               <div className="text-center bg-white/95 rounded-2xl p-2.5 storybook-border-sm">

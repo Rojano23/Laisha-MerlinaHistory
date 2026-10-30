@@ -52,7 +52,7 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <path d="M50 240 C50 180 80 170 110 170 C140 170 170 180 170 240 L170 310 L50 310 Z" fill="#FCA5A5" stroke="#382B24" strokeWidth="3" />
           <rect x="65" y="250" width="90" height="40" rx="10" fill="#F87171" stroke="#382B24" strokeWidth="2.5" />
           {/* Small framed puppy picture on wall */}
-          <g className="cursor-pointer" onClick={() => handleCharClick('jorge')}>
+          <g className="cursor-pointer" onClick={() => handleCharClick('rox')}>
             <rect x="70" y="50" width="80" height="95" rx="10" fill="#FEF08A" stroke="#382B24" strokeWidth="3.5" />
             <rect x="78" y="58" width="64" height="66" rx="6" fill="#E2E8F0" />
             {/* Silueta tierna de perrito */}
@@ -73,8 +73,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <path d="M335 264 Q345 270 335 276" stroke="#382B24" strokeWidth="2" />
           <circle cx="320" cy="271" r="3" fill="#EF4444" />
 
-          {/* JORGE (Left) - Storybook style, arms out expressing dreams */}
-          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('jorge')}>
+          {/* Rox (Left) - Storybook style, arms out expressing dreams */}
+          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('rox')}>
             {/* Body */}
             <path d="M125 340 L135 230 C135 190 205 190 205 230 L215 340 Z" fill="#10B981" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="170" cy="165" r="34" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
@@ -94,12 +94,12 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             {/* Tap Badge */}
             <rect x="130" y="100" width="80" height="24" rx="12" fill="#10B981" stroke="#382B24" strokeWidth="2" />
             <text x="170" y="116" fontSize="12" textAnchor="middle" fill="#FFFFFF" fontFamily="Patrick Hand, sans-serif" fontWeight="bold">
-              ¡Toca a Jorge!
+              ¡Toca a Rox!
             </text>
           </g>
 
-          {/* CECI (Right) - Storybook style with crossed arms & warm smile */}
-          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('ceci')}>
+          {/* More (Right) - Storybook style with crossed arms & warm smile */}
+          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('more')}>
             {/* Hair back */}
             <path d="M470 180 C445 220 445 280 455 310 C480 310 470 250 480 220 Z" fill="#451A03" stroke="#382B24" strokeWidth="3" />
             <path d="M530 180 C555 220 555 280 545 310 C520 310 530 250 520 220 Z" fill="#451A03" stroke="#382B24" strokeWidth="3" />
@@ -120,7 +120,7 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             {/* Tap Badge */}
             <rect x="460" y="100" width="80" height="24" rx="12" fill="#E11D48" stroke="#382B24" strokeWidth="2" />
             <text x="500" y="116" fontSize="12" textAnchor="middle" fill="#FFFFFF" fontFamily="Patrick Hand, sans-serif" fontWeight="bold">
-              ¡Toca a Ceci!
+              ¡Toca a More!
             </text>
           </g>
         </svg>
@@ -136,7 +136,7 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <rect y="280" width="640" height="120" fill="#FDE68A" stroke="#382B24" strokeWidth="3" />
 
           {/* Big Colorful Tablet/Phone in center showing Puppy Laisha */}
-          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('ceci')}>
+          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('more')}>
             {/* Device Casing */}
             <rect x="220" y="40" width="200" height="310" rx="28" fill="#382B24" stroke="#1E1B18" strokeWidth="4" />
             {/* Screen */}
@@ -178,8 +178,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             </text>
           </g>
 
-          {/* Ceci on Left - Hand on heart, completely moved */}
-          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('ceci')}>
+          {/* More on Left - Hand on heart, completely moved */}
+          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('more')}>
             <path d="M80 380 L90 230 C90 190 160 190 160 230 L170 380 Z" fill="#E11D48" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="125" cy="165" r="34" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="113" cy="162" r="9" fill="#E0F2FE" fillOpacity="0.4" stroke="#92400E" strokeWidth="2.5" />
@@ -189,8 +189,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             <circle cx="160" cy="275" r="10" fill="#FED7AA" stroke="#382B24" strokeWidth="2" />
           </g>
 
-          {/* Jorge on Right - Leaning forward smiling */}
-          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('jorge')}>
+          {/* Rox on Right - Leaning forward smiling */}
+          <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('rox')}>
             <path d="M470 380 L480 230 C480 190 550 190 550 230 L560 380 Z" fill="#10B981" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="515" cy="165" r="34" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
             {/* Pointing arm towards phone */}
@@ -207,11 +207,11 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
       return (
         <svg viewBox="0 0 640 400" className="w-full h-full select-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Split Screen Storybook Style */}
-          {/* Left: Jorge at work */}
+          {/* Left: Rox at work */}
           <rect x="0" y="0" width="315" height="400" fill="#F1F5F9" />
           <rect x="30" y="270" width="260" height="40" rx="8" fill="#94A3B8" stroke="#382B24" strokeWidth="3" />
-          {/* Jorge with phone */}
-          <g className="cursor-pointer" onClick={() => handleCharClick('jorge')}>
+          {/* Rox with phone */}
+          <g className="cursor-pointer" onClick={() => handleCharClick('rox')}>
             <path d="M70 380 L80 230 C80 190 150 190 150 230 L160 380 Z" fill="#10B981" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="115" cy="165" r="34" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
             {/* Phone to ear */}
@@ -273,8 +273,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <rect x="25" y="40" width="130" height="240" rx="8" fill="#B45309" stroke="#382B24" strokeWidth="3.5" />
           <circle cx="140" cy="160" r="6" fill="#FDE047" stroke="#382B24" strokeWidth="2" />
 
-          {/* Jorge in doorway dropping his keys in pure joy */}
-          <g className="cursor-pointer" onClick={() => handleCharClick('jorge')}>
+          {/* Rox in doorway dropping his keys in pure joy */}
+          <g className="cursor-pointer" onClick={() => handleCharClick('rox')}>
             <path d="M120 380 L130 230 C130 190 200 190 200 230 L210 380 Z" fill="#10B981" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="165" cy="165" r="34" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="152" cy="162" r="4.5" fill="#382B24" />
@@ -303,7 +303,7 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             <path d="M330 290 L290 335" stroke="#F59E0B" strokeWidth="14" strokeLinecap="round" />
             <path d="M330 290 L290 335" stroke="#382B24" strokeWidth="2.5" fill="none" />
 
-            {/* Head facing up at Jorge with bright happy eyes */}
+            {/* Head facing up at Rox with bright happy eyes */}
             <circle cx="310" cy="240" r="32" fill="#64748B" stroke="#382B24" strokeWidth="3.5" />
             <polygon points="285,225 270,165 305,195" fill="#334155" stroke="#382B24" strokeWidth="2.5" />
             <polygon points="330,225 348,165 315,195" fill="#334155" stroke="#382B24" strokeWidth="2.5" />
@@ -322,8 +322,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             </text>
           </g>
 
-          {/* Ceci on right smiling warmly */}
-          <g className="cursor-pointer" onClick={() => handleCharClick('ceci')}>
+          {/* More on right smiling warmly */}
+          <g className="cursor-pointer" onClick={() => handleCharClick('more')}>
             <path d="M510 380 L515 230 C515 190 575 190 575 230 L580 380 Z" fill="#E11D48" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="545" cy="165" r="32" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="535" cy="162" r="8" fill="#E0F2FE" fillOpacity="0.4" stroke="#92400E" strokeWidth="2.5" />
@@ -350,8 +350,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             <path d="M330 125 C330 117 342 117 342 125 C342 133 330 141 330 141 C330 141 318 133 318 125 C318 117 330 117 330 125 Z" fill="#F43F5E" />
           </g>
 
-          {/* Jorge kneeling on carpet */}
-          <g className="cursor-pointer" onClick={() => handleCharClick('jorge')}>
+          {/* Rox kneeling on carpet */}
+          <g className="cursor-pointer" onClick={() => handleCharClick('rox')}>
             <path d="M200 330 C200 270 260 270 290 310 L220 350 Z" fill="#1E293B" stroke="#382B24" strokeWidth="3" />
             <path d="M190 330 L210 230 C210 195 270 195 270 230 L280 330 Z" fill="#10B981" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="230" cy="175" r="32" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
@@ -360,14 +360,14 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             <path d="M226 186 Q236 195 246 186" stroke="#382B24" strokeWidth="2.5" fill="none" />
           </g>
 
-          {/* Laisha resting front paws on Jorge's knee */}
+          {/* Laisha resting front paws on Rox's knee */}
           <g className="cursor-pointer transition-transform hover:scale-105" onClick={() => handleCharClick('laisha')}>
             <ellipse cx="360" cy="290" rx="36" ry="42" fill="#475569" stroke="#382B24" strokeWidth="3.5" />
             {/* Paws on knee */}
             <path d="M340 275 L285 300" stroke="#F59E0B" strokeWidth="14" strokeLinecap="round" />
             <path d="M340 275 L285 300" stroke="#382B24" strokeWidth="2.5" fill="none" />
 
-            {/* Head facing Jorge */}
+            {/* Head facing Rox */}
             <circle cx="340" cy="210" r="32" fill="#64748B" stroke="#382B24" strokeWidth="3.5" />
             <polygon points="320,195 315,135 340,170" fill="#334155" stroke="#382B24" strokeWidth="2.5" />
             <polygon points="355,195 365,135 345,170" fill="#334155" stroke="#382B24" strokeWidth="2.5" />
@@ -377,8 +377,8 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
             <path d="M325 235 C335 244 355 244 365 235" stroke="#FB7185" strokeWidth="8" strokeLinecap="round" />
           </g>
 
-          {/* Ceci watching happily */}
-          <g className="cursor-pointer" onClick={() => handleCharClick('ceci')}>
+          {/* More watching happily */}
+          <g className="cursor-pointer" onClick={() => handleCharClick('more')}>
             <circle cx="500" cy="205" r="30" fill="#FED7AA" stroke="#382B24" strokeWidth="3.5" />
             <circle cx="490" cy="202" r="8" fill="#E0F2FE" fillOpacity="0.4" stroke="#92400E" strokeWidth="2" />
             <circle cx="510" cy="202" r="8" fill="#E0F2FE" fillOpacity="0.4" stroke="#92400E" strokeWidth="2" />
@@ -401,7 +401,7 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           <text x="360" y="65" fontSize="18" fill="#94A3B8" fontFamily="Patrick Hand, sans-serif" fontWeight="bold">Zzz...</text>
           <text x="390" y="50" fontSize="22" fill="#CBD5E1" fontFamily="Patrick Hand, sans-serif" fontWeight="bold">Zzz...</text>
 
-          {/* Background bed where Ceci & Jorge are sleeping peacefully */}
+          {/* Background bed where More & Rox are sleeping peacefully */}
           <rect x="300" y="80" width="300" height="120" rx="14" fill="#334155" stroke="#382B24" strokeWidth="3" />
           <circle cx="360" cy="110" r="18" fill="#FED7AA" />
           <circle cx="430" cy="110" r="18" fill="#FED7AA" />
@@ -409,7 +409,7 @@ export const StorybookScene: React.FC<StorybookSceneProps> = ({
           {/* Bedroom carpet floor */}
           <rect y="210" width="640" height="190" fill="#0F172A" stroke="#382B24" strokeWidth="3" />
 
-          {/* Spot on mischievous Laisha & Ceci's red shoe */}
+          {/* Spot on mischievous Laisha & More's red shoe */}
           <ellipse cx="260" cy="300" rx="200" ry="75" fill="#334155" opacity="0.6" />
 
           {/* THE RED HIGH-HEEL SHOE! */}

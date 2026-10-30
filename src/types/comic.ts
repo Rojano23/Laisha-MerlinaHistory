@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type CharacterId = 'laisha' | 'merlina' | 'ceci' | 'jorge' | 'vecino' | 'narrador';
+export type CharacterId = 'laisha' | 'merlina' | 'more' | 'rox' | 'vecino' | 'narrador' | 'More' | 'Rox' | 'fox' | 'Fox' | 'ceci' | 'jorge';
 
 export interface CharacterProfile {
   id: CharacterId;

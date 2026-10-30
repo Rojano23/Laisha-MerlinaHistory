@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { StorybookCharacter } from '../illustrations/StorybookAvatars';
-import { CHARACTERS_DATA } from '../../data/characters';
+import { CHARACTERS_DATA, PRIMARY_CHARACTER_IDS } from '../../data/characters';
 import { comicSound } from '../../utils/audio';
 import { shouldStartFresh } from '../../utils/readingState';
 import {
@@ -81,10 +81,10 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
                 🌪️ Merlina (El torbellino)
               </span>
               <span className="bg-rose-100 text-rose-950 px-3 py-1.5 rounded-2xl storybook-border-sm">
-                👓 Ceci (La protectora)
+                👓 More (La protectora)
               </span>
               <span className="bg-emerald-100 text-emerald-950 px-3 py-1.5 rounded-2xl storybook-border-sm">
-                ⚽ Jorge (El optimista)
+                ⚽ Rox (El optimista)
               </span>
             </div>
 
@@ -159,13 +159,13 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
                 <div
                   onClick={() => {
                     comicSound.playPop();
-                    onGoToCharacters('ceci');
+                    onGoToCharacters('more');
                   }}
                   className="flex items-center gap-2 cursor-pointer hover:opacity-85 transition-opacity"
                 >
-                  <StorybookCharacter characterId="ceci" size="sm" />
+                  <StorybookCharacter characterId="more" size="sm" />
                   <div className="text-left">
-                    <span className="text-xs font-black text-[#382B24] block">Mamá Ceci</span>
+                    <span className="text-xs font-black text-[#382B24] block">Mamá More</span>
                     <span className="text-[11px] text-slate-500 font-comic">Cuidadosa</span>
                   </div>
                 </div>
@@ -173,13 +173,13 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
                 <div
                   onClick={() => {
                     comicSound.playPop();
-                    onGoToCharacters('jorge');
+                    onGoToCharacters('rox');
                   }}
                   className="flex items-center gap-2 cursor-pointer hover:opacity-85 transition-opacity"
                 >
-                  <StorybookCharacter characterId="jorge" size="sm" />
+                  <StorybookCharacter characterId="rox" size="sm" />
                   <div className="text-left">
-                    <span className="text-xs font-black text-[#382B24] block">Papá Jorge</span>
+                    <span className="text-xs font-black text-[#382B24] block">Papá Rox</span>
                     <span className="text-[11px] text-slate-500 font-comic">¡Al parque!</span>
                   </div>
                 </div>
@@ -210,7 +210,7 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {(Object.keys(CHARACTERS_DATA) as Array<keyof typeof CHARACTERS_DATA>).map((cId) => {
+          {PRIMARY_CHARACTER_IDS.map((cId) => {
             const char = CHARACTERS_DATA[cId];
             return (
               <div
@@ -274,7 +274,7 @@ export const HomeCover: React.FC<HomeCoverProps> = ({
             </h2>
             <p className="font-comic text-base md:text-lg text-slate-700 leading-relaxed mb-4">
               Nuestras historias suceden en un conjunto familiar tranquilo: la sala con sus sillones cómodos,
-              el jardín donde Laisha toma el sol, las banquetas por donde pasea Jorge, y sobre todo...
+              el jardín donde Laisha toma el sol, las banquetas por donde pasea Rox, y sobre todo...
               ¡el gran parque verde lleno de árboles, mariposas y pelotas rebotando!
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm font-black text-slate-700">

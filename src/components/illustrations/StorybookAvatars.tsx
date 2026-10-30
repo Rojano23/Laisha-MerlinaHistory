@@ -256,9 +256,9 @@ export const MerlinaStorybook: React.FC<AvatarProps> = ({
 };
 
 // ==========================================
-// CECI: Warm Storybook Mom
+// MORE: Warm Storybook Mom
 // ==========================================
-export const CeciStorybook: React.FC<AvatarProps> = ({
+export const MoreStorybook: React.FC<AvatarProps> = ({
   className = '',
   size = 'md',
 }) => {
@@ -310,10 +310,12 @@ export const CeciStorybook: React.FC<AvatarProps> = ({
   );
 };
 
+export const CeciStorybook = MoreStorybook;
+
 // ==========================================
-// JORGE: Cheerful Storybook Dad
+// ROX: Cheerful Storybook Dad
 // ==========================================
-export const JorgeStorybook: React.FC<AvatarProps> = ({
+export const RoxStorybook: React.FC<AvatarProps> = ({
   className = '',
   size = 'md',
 }) => {
@@ -360,22 +362,30 @@ export const JorgeStorybook: React.FC<AvatarProps> = ({
   );
 };
 
+export const FoxStorybook = RoxStorybook;
+export const JorgeStorybook = RoxStorybook;
+
 // Dispatcher Component
 export const StorybookCharacter: React.FC<{
-  characterId: CharacterId;
+  characterId: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   expression?: 'normal' | 'happy' | 'thinking' | 'wink' | 'mischievous';
 }> = ({ characterId, className = '', size = 'md', expression = 'normal' }) => {
-  switch (characterId) {
+  const normalizedId = (characterId || '').toLowerCase().trim();
+
+  switch (normalizedId) {
     case 'laisha':
       return <LaishaStorybook className={className} size={size} expression={expression} />;
     case 'merlina':
       return <MerlinaStorybook className={className} size={size} expression={expression} />;
+    case 'more':
     case 'ceci':
-      return <CeciStorybook className={className} size={size} expression={expression} />;
+      return <MoreStorybook className={className} size={size} expression={expression} />;
+    case 'rox':
+    case 'fox':
     case 'jorge':
-      return <JorgeStorybook className={className} size={size} expression={expression} />;
+      return <RoxStorybook className={className} size={size} expression={expression} />;
     default:
       return (
         <div className={`rounded-full bg-amber-100 storybook-border flex items-center justify-center font-bold text-xs ${sizeClasses[size]} ${className}`}>
